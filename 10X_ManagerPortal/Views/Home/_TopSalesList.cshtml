@@ -1,0 +1,26 @@
+﻿@using _10X_ManagerPortal.Models 
+@model List<TopSalesProductVM>
+
+@{
+    int rank = 1;
+}
+
+@foreach (var item in Model)
+{
+    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-primary rounded-circle"
+                  style="width:28px;height:28px;line-height:18px;">
+                @rank
+            </span>
+            <div>
+                <h6 class="mb-0">@item.ItemName</h6>
+                <small class="text-muted">@item.Brand</small>
+            </div>
+        </div>
+        <div class="fw-semibold text-primary">
+            @item.TotalSales.ToString("N2")
+        </div>
+    </li>
+    rank++;
+}

@@ -1,0 +1,113 @@
+﻿
+
+@{
+    ViewBag.Title = "Document Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="cardheader p-4">
+        <div class="card-header d-flex flex-column gap-3">
+            <h2 class="mb-0" style="color: #e30b5c; font-size:25px">Order</h2>
+
+            <div class="row">
+                <!-- LEFT HEADER -->
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Document No.</label>
+                        <div class="input-group" style="width:280px">
+                            <input id="CustomerCode" name="CustomerCode" type="text" class="form-control form-control-sm" style="min-width:220px!important" />
+                            <span class="input-group-text" style="cursor:pointer" onclick="OpenCustomerPopup()">
+                                <i class="bx bx-search"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Name</label>
+                        <input type="text" id="CustomerName" name="CustomerName" class="form-control form-control-sm" />
+                    </div>
+
+                    <div class="d-flex align-items-center mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Contact Person</label>
+                        <div class="input-group" style="width:280px">
+                            @*<input id="ContactPerson" name="ContactPerson" type="text" class="form-control form-control-sm" style="min-width:220px!important" />*@
+                            <select id="ContactPerson"
+                                    name="ContactPerson"
+                                    class="form-select form-select-sm"
+                                    style="min-width:220px!important">
+                                <option value="">-- Select Sales Employee --</option>
+                            </select>
+                            <span class="input-group-text" style="cursor:pointer" onclick="ContactPersonPopup()">
+                                <i class="bx bx-user"></i>
+                            </span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="d-flex align-items-center mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Document Type</label>
+                        <input type="text" id="CustomerRefNo" name="CustomerRefNo" class="form-control form-control-sm" />
+                    </div>
+
+                    <div class="d-flex align-items-center mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Local Currency</label>
+                        <select id="LocalCurrency" name="LocalCurrency" class="form-select form-select-sm">
+                            <option value="">Select Currency</option>
+                            <option value="AED">AED</option>
+                            <option value="USD">USD</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Branch</label>
+                        @Html.DropDownList("Branch", (IEnumerable<SelectListItem>)ViewBag.Branches,
+"Select Branch", new { @class = "form-select form-select-sm" })
+                        @*<select id="Branch" name="Branch" class="form-select form-select-sm">
+                                <option value="">Select Branch</option>
+                            </select>*@
+                    </div>
+                </div>
+
+                <!-- RIGHT HEADER -->
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">No.</label>
+                        <div class="form-control form-control-sm d-flex justify-content-end p-0 w-50" style="max-width: 280px;border:none !important">
+                            <select id="Series" name="Series" class="form-select form-select-sm" style="max-width:130px;">
+                                <option value="Manual">Manual</option>
+                            </select>
+                            <input type="text" id="DocNum" name="DocNum" class="form-control form-control-sm" value="SO-10126024" style="max-width:150px;" readonly />
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Status</label>
+                        <input type="text" id="Status" name="Status" class="form-control form-control-sm w-50" value="Open" readonly />
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Posting Date</label>
+                        <input type="date" id="PostingDate" name="PostingDate" class="form-control form-control-sm w-50" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Delivery Date</label>
+                        <input type="date" id="DeliveryDate" name="DeliveryDate" class="form-control form-control-sm w-50" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Document Date</label>
+                        <input type="date" id="DocumentDate" name="DocumentDate" class="form-control form-control-sm w-50" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <label class="form-label mb-0 me-2" style="min-width: 160px;">Branch Reg. No.</label>
+                        <input type="text" id="BranchRegNo" name="BranchRegNo" class="form-control form-control-sm w-50" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

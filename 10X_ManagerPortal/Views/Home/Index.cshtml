@@ -1,0 +1,600 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using System.Data
+@model _10X_ManagerPortal.Models.DashboardViewModel
+<style>
+    th, label {
+        text-transform: none !important;
+    }
+
+    @@media (max-width: 576px) {
+        .card-body span[style*="font-size:50px"] {
+            font-size: 36px !important;
+        }
+
+        .card-title {
+            font-size: 14px;
+        }
+
+        .card .btn-sm {
+            font-size: 11px;
+            padding: 4px 8px;
+        }
+    }
+</style>
+<div class=" mt-4">
+
+    <!-- === Top Row Tiles === -->
+    <div class="row g-4">
+
+        <!-- Card 1 -->
+        <!--<div class="col-md-3">
+        <div class="card shadow bg-transparent border border-primary h-100">
+            <div class="card-body">-->
+        <!-- Header -->
+        <!--<div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title">Today's Sales</h5>
+            <span class="badge rounded-pill bg-primary px-3">Retail</span>
+        </div>-->
+        <!-- Amount -->
+        <!--<h2 class="fw-bold mb-1">
+             @Model.TodaySales.ToString("F2")
+        </h2>-->
+        <!-- Growth -->
+        <!--<div class="d-flex align-items-center gap-2">
+            @if (Model.TodaySalesGrowth >= 0)
+            {
+                <span class="text-success fw-semibold">
+                    ▲ @Model.TodaySalesGrowth.ToString("0.##")%
+                </span>
+            }
+            else
+            {
+                <span class="text-danger fw-semibold">
+                    ▼ @Model.TodaySalesGrowth.ToString("0.##")%
+                </span>
+            }
+        </div>-->
+        <!-- Footer -->
+        <!--<p class="mt-2 mb-0 small text-light">
+                        Vs yesterday ·
+                        <a href="@Url.Action("Index", "Reports")"
+                           class="text-danger text-decoration-none fw-semibold">
+                            Open daily sales report
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+        </div>-->
+        <div class="col-6 col-md-3">
+            <div class="card shadow bg-transparent border border-primary h-100">
+                <div class="card-body">
+
+                    <!-- Title -->
+                    <h5 class="card-title ">Sales</h5>
+
+                    <!-- Value -->
+                    <h2 class="fw-bold mb-2">
+                        @*₹ @Model.TodaySales.GetValueOrDefault().ToString("N0")*@
+                        @Model.TodaySales.ToString("F2")
+                    </h2>
+
+                    <!-- Mini Graph -->
+                    <div style="height:80px;">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Card 2 -->
+        <div class="col-6 col-md-3">
+            <div class="card shadow bg-transparent border border-primary h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Approvals</h5>
+                    @* <p class="card-text mb-1 fw-bold">3 Documents</p>*@
+                    <p class="card-text mb-1 fw-bold"><span style="font-size:50px">@Model.PendingApprovals</span> </p>
+                    <p class="mt-2 mb-0 small text-light">
+
+                        <a href="@Url.Action("Index", "Approvals")"
+                           class="text-danger text-decoration-none fw-semibold">
+                            Review Now
+                        </a>
+                    </p>
+                    @*<p class="card-text text-muted">Highest value: PO #12345</p>*@
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Card 3 -->
+        <div class="col-6 col-md-3">
+            <div class="card shadow bg-transparent border border-primary h-100">
+                <div class="card-body">
+                    <h5 class="card-title"> Alerts</h5>
+                    <p class="card-text mb-1 fw-bold"><span style="font-size:50px">@Model.CriticalIssuesCount </span> </p>
+                    @*<p class="card-text text-muted">Negative stock & high discount bills</p>*@
+                    <p class="mt-2 mb-0 small text-light">
+
+                        <a href="@Url.Action("Index", "Notifications")"
+                           class="text-danger text-decoration-none fw-semibold">
+                            Review Now
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="col-6 col-md-3">
+            <div class="card shadow bg-transparent border border-primary h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Collections Posted</h5>
+                    @*<p class="card-text mb-1 fw-bold">₹ 92,300</p>*@
+                    <p class="card-text mb-1 fw-bold"> <span style="font-size:50px">@Model.CollectionsPosted.ToString("F2")</span>   </p>
+                    @*<p class="card-text text-muted">Updated from SAP B1 HANA AR module</p>*@
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- === Middle Row === -->
+    <div class="row g-4 mt-2">
+
+        <!-- Approvals Snapshot -->
+        <div class="col-md-8">
+            <div class="card shadow bg-transparent border border-secondary h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-0">
+                        <h5 class="card-title">Approvals Snapshot</h5>
+                        <div>
+                            @*<button class="btn btn-sm btn-danger rounded-pill">Today</button>
+                                <button class="btn btn-sm btn-secondary rounded-pill ms-1">Last 7 days</button>*@
+                            @*<button class="btn btn-sm btn-primary rounded-pill" onclick="loadApprovals('today')">
+                                    Today
+                                </button>
+
+                                <button class="btn btn-sm btn-secondary rounded-pill ms-1" onclick="loadApprovals('7days')">
+                                    Last 7 days
+                                </button>*@
+                            <button class="btn btn-sm btn-primary rounded-pill filter-btn"
+                                    data-filter="today"
+                                    onclick="setActiveFilter(this); loadApprovals('today')">
+                                Today
+                            </button>
+
+                            <button class="btn btn-sm btn-secondary rounded-pill ms-1 filter-btn"
+                                    data-filter="7days"
+                                    onclick="setActiveFilter(this); loadApprovals('7days')">
+                                Last 7 days
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <p class="text-muted">Documents Pending List</p>
+
+                    <div class="table-responsive">
+                        <table id="approvalsTable" class="table display compact table-striped table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="w-18">Doc Type</th>
+                                    <th class="w-12">Number</th>
+                                    <th class="w-50">BP Name</th>
+                                    <th class="w-12">Amount</th>
+                                    <th class="w-12">Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="approvalsBody"></tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="col-md-4">
+            <div class="card shadow bg-transparent border border-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">Latest Notifications</h5>
+                        <a href="@Url.Action("Index", "Notifications")" class="text-secondary small">
+                            View all →
+                        </a>
+
+                    </div>
+
+                    <p class="text-muted">Process deviations & system alerts</p>
+
+                    <ul class="list-group list-group-flush">
+                        @foreach (DataRow n in Model.NotificationList.Rows)
+                        {
+
+
+                            string priority = n["Priority"]?.ToString();
+                            string priorityBadgeClass = "bg-info";
+                            string priorityText = "Info";
+
+                            if (priority == "2")
+                            {
+                                priorityBadgeClass = "bg-danger";   // High
+                                priorityText = "High";
+                            }
+                            else if (priority == "1")
+                            {
+                                priorityBadgeClass = "bg-warning text-dark";   // Medium
+                                priorityText = "Medium";
+                            }
+
+                            string subject = n["Subject"]?.ToString()?.ToLower() ?? "";
+                            string typeBadgeClass =
+                                subject.Contains("discount") ? "bg-warning text-dark" :
+                                subject.Contains("negative") ? "bg-danger" :
+                                subject.Contains("report") ? "bg-primary" :
+                                                               "bg-info";
+                            <li class="list-group-item bg-transparent">
+
+                                <!-- Notification Title -->
+                                @n["AlertName"]
+
+                                <br />
+
+                                <!-- Subject-Based Type Badge -->
+                                <span class="badge @typeBadgeClass me-2">
+                                    @n["Subject"]
+                                </span>
+
+                                <!-- Priority Badge -->
+                                <span class="badge @priorityBadgeClass">
+                                    @priorityText
+                                </span>
+
+                                <br />
+
+                                <!-- Date + Time -->
+                                <!--<small class="text-muted">
+                                    n["Date"]?.ToString("dd-MMM-yyyy") • n["Time"]
+                                </small>-->
+
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row g-4 mt-2">
+        <div class="col-md-6">
+            <div class="card shadow-sm border border-secondary h-100">
+                <div class="card-header d-flex align-items-center justify-content-between bg-light">
+                    @*<h5 class="card-title m-0">
+            Top Products by <span class="text-primary">Sales</span>
+        </h5>*@
+                    <h5 class="card-title m-0">
+                        Top Products by <span class="text-primary">Sales</span>
+                        <small class="text-muted ms-1" id="salesPeriodText">(Last 7 Days)</small>
+                    </h5>
+
+
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                type="button"
+                                id="topSales"
+                                data-bs-toggle="dropdown">
+                            Period
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item period-filter" data-period="7" href="#">Last 7 Days</a></li>
+                            <li><a class="dropdown-item period-filter" data-period="30" href="#">Last Month</a></li>
+                            <li><a class="dropdown-item period-filter" data-period="365" href="#">Last Year</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card-body pt-3">
+                    <ul class="list-group list-group-flush" id="topSalesList">
+                        @Html.Partial("_TopSalesList", Model.TopSalesProducts)
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border border-secondary h-100">
+                <div class="card-header d-flex align-items-center justify-content-between bg-light">
+                    @*<h5 class="card-title m-0">
+            Top Products by <span class="text-danger">Purchase</span>
+        </h5>*@
+                    <h5 class="card-title m-0">
+                        Top Products by <span class="text-danger">Purchase</span>
+                        <small class="text-muted ms-1" id="purchasePeriodText">(Last 7 Days)</small>
+                    </h5>
+
+
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                type="button"
+                                id="topPurchase"
+                                data-bs-toggle="dropdown">
+                            Period
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item purchase-filter" data-period="7" href="#">Last 7 Days</a></li>
+                            <li><a class="dropdown-item purchase-filter" data-period="30" href="#">Last Month</a></li>
+                            <li><a class="dropdown-item purchase-filter" data-period="365" href="#">Last Year</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card-body pt-3">
+                    <ul class="list-group list-group-flush" id="topPurchaseList">
+                        @Html.Partial("_TopSalesList", Model.TopPurchaseProducts)
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+    var approvalsTable;
+
+    $(document).ready(function () {
+
+        /* ===============================
+           DATATABLE INIT
+        =============================== */
+        approvalsTable = $('#approvalsTable').DataTable({
+            searching: false,
+            info: false,
+            lengthChange: false,
+            paging: false,
+            ordering: false,
+            language: {
+                emptyTable: "No approvals to display"
+            }
+        });
+
+        loadApprovals("today");
+
+        /* ===============================
+           SALES MINI CHART
+        =============================== */
+        initSalesChart();
+
+        /* ===============================
+           PERIOD FILTER EVENTS
+        =============================== */
+        $('.period-filter').on('click', function (e) {
+            e.preventDefault();
+            loadTopSales($(this).data('period'));
+        });
+
+        $('.purchase-filter').on('click', function (e) {
+            e.preventDefault();
+            loadTopPurchase($(this).data('period'));
+        });
+
+    });
+
+    /* ===============================
+       LOAD APPROVALS
+    =============================== */
+    function loadApprovals(filter) {
+        $.ajax({
+            url: '@Url.Action("GetApprovals", "Home")',
+            type: "GET",
+            data: { filter: filter },
+            success: function (data) {
+
+                approvalsTable.clear();
+
+                if (!data || data.length === 0) {
+                    approvalsTable.draw();
+                    return;
+                }
+
+                $.each(data, function (i, item) {
+                    approvalsTable.row.add([
+                        item.DocTypeName,
+                        item.DocNum,
+                        item.CardName,
+                        parseFloat(item.DocTotal).toFixed(2),
+                        '<span class="badge bg-primary">Pending</span>'
+                    ]);
+                });
+
+                approvalsTable.draw();
+            }
+        });
+    }
+
+    /* ===============================
+       TOP SALES
+    =============================== */
+    function loadTopSales(days) {
+        $.get('@Url.Action("GetTopSales", "Home")', { days: days }, function (html) {
+            $('#topSalesList').html(html);
+        });
+    }
+
+    /* ===============================
+       TOP PURCHASE
+    =============================== */
+    function loadTopPurchase(days) {
+        $.get('@Url.Action("GetTopPurchase", "Home")', { days: days }, function (html) {
+            $('#topPurchaseList').html(html);
+        });
+    }
+         function initSalesChart() {
+
+        const canvas = document.getElementById('salesChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SalesLabels));
+        const data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SalesData));
+
+        if (!labels || labels.length === 0) return;
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+        gradient.addColorStop(0, 'rgba(255,165,0,0.5)');
+        gradient.addColorStop(1, 'rgba(255,165,0,0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    borderColor: '#FFA500',
+                    backgroundColor: gradient,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", initSalesChart);
+    /* ===============================
+       SALES CHART
+    =============================== */
+    @*function initSalesChart() {
+
+        const canvas = document.getElementById('salesChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 100);
+        gradient.addColorStop(0, 'rgba(255,165,0,0.5)');
+        gradient.addColorStop(1, 'rgba(255,165,0,0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.SalesLabels)),
+                datasets: [{
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.SalesData)),
+                    borderColor: '#FFA500',
+                    backgroundColor: gradient,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+    }*@
+    </script>
+    <script>
+        function setActiveFilter(clickedBtn) {
+            // Get all filter buttons
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+            });
+
+            // Set clicked button as active
+            clickedBtn.classList.remove('btn-secondary');
+            clickedBtn.classList.add('btn-primary');
+        }
+    </script>
+    <script>
+        function getPeriodLabel(days) {
+            switch (days) {
+                case "7": return "Last 7 Days";
+                case "30": return "Last Month";
+                case "365": return "Last Year";
+                default: return "";
+            }
+        }
+
+        // Top Sales dropdown click
+        document.querySelectorAll('.period-filter').forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const period = this.dataset.period;
+                const label = getPeriodLabel(period);
+
+                // Update heading text
+                document.getElementById('salesPeriodText').innerText = `(${label})`;
+
+                // Update dropdown button text
+                document.getElementById('topSales').innerText = label;
+
+                // Load data (your existing logic)
+                loadTopSales(period);
+            });
+        });
+
+        // Top Purchase dropdown click
+        document.querySelectorAll('.purchase-filter').forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const period = this.dataset.period;
+                const label = getPeriodLabel(period);
+
+                document.getElementById('purchasePeriodText').innerText = `(${label})`;
+                document.getElementById('topPurchase').innerText = label;
+
+                loadTopPurchase(period);
+            });
+        });
+    </script>
+
+
+}
+
+
+
+
+

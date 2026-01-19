@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Notifications Centre";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<_10X_ManagerPortal.Models.NotificationViewModel>
+
+<div class="container-fluid mt-3">
+    <div class="card shadow bg-transparent border border-primary p-3 p-md-4">
+
+        <!-- ================= HEADER ================= -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+            <div>
+                <h4 class="card-title mb-1">Notifications Centre</h4>
+                <p class="text-muted mb-0">
+                    System alerts & process deviation notifications from SAP B1
+                </p>
+            </div>
+
+            @*<div class="btn-group ms-md-auto mt-3 mt-md-0" role="group">
+                    <button type="button" class="btn btn-primary active px-4">All</button>
+                    <button type="button" class="btn btn-primary px-4">Unread</button>
+                    <button type="button" class="btn btn-primary px-4">Critical</button>
+                </div>*@
+
+        </div>
+
+        <!-- ================= FILTERS ================= -->
+        <form method="get">
+            <div class="row g-2 mb-4">
+                <div class="col-12 col-md-auto">
+                    <input type="text"
+                           id="notificationSearch"
+                           class="form-control"
+                           placeholder="Search notifications...">
+                </div>
+                @*<div class="col-12 col-md-auto">
+                    <select class="form-select" name="type">
+                        <option selected>All types</option>
+                        <option value="Alert">Alert</option>
+                        <option value="Deviation">Deviation</option>
+                        <option value="Report">Report</option>
+                    </select>
+                </div>*@
+
+                <div class="col-12 col-md-auto">
+                    <input type="date"
+                           name="dateFrom"
+                           class="form-control"
+                           value="@Request["dateFrom"]" />
+                </div>
+
+                <div class="col-12 col-md-auto">
+                    <input type="date"
+                           name="dateTo"
+                           class="form-control"
+                           value="@Request["dateTo"]" />
+                </div>
+
+                <div class="col-12 col-md-auto">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Apply Filters
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+        <!-- ================= NOTIFICATIONS LIST ================= -->
+        <div class="list-group">
+
+            @if (Model != null && Model.Any())
+            {
+                foreach (var n in Model)
+                {
+                    <a class="list-group-item list-group-item-action"
+                       href="@Url.Action("Preview", "Notifications", new { code = n.Code })">
+
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+
+                            <!-- LEFT CONTENT -->
+                            <div>
+                                <div class="fw-bold mb-1">
+                                    @n.Subject
+                                </div>
+
+                                <span class="badge
+                                    @(n.Subject.Contains("discount") ? "bg-warning text-dark" :
+                                      n.Subject.Contains("Negative") ? "bg-danger" :
+                                      n.Subject.Contains("report") ? "bg-primary" :
+                                      "bg-info") me-2">
+                                    @n.Name
+                                </span>
+
+                                <small class="text-muted d-block mt-1">
+                                    @* Optional date/time *@
+                                    @*@n.RecDate?.ToString("dd-MMM-yyyy") • @n.RecTime*@
+                                </small>
+                            </div>
+
+                            <!-- RIGHT BADGE -->
+                            @if (!n.WasRead)
+                            {
+                                <span class="badge bg-primary align-self-md-center">
+                                    NEW
+                                </span>
+                            }
+
+                        </div>
+
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="text-center text-muted py-4">
+                    No notifications found
+                </div>
+            }
+
+        </div>
+
+    </div>
+</div>
+<script>
+    document.getElementById("notificationSearch").addEventListener("keyup", function () {
+
+        let searchValue = this.value.toLowerCase();
+        let notifications = document.querySelectorAll(".list-group-item");
+
+        notifications.forEach(function (item) {
+            let text = item.innerText.toLowerCase();
+
+            if (text.includes(searchValue)) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    });
+</script>
+
+<!-- ================= OPTIONAL MOBILE POLISH ================= -->
+<!--<style>
+     (max-width: 576px) {
+        .btn-group .btn {
+            flex: 1;
+        }
+    }
+</style>-->

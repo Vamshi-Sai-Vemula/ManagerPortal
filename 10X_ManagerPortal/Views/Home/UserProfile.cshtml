@@ -1,0 +1,114 @@
+﻿@model _10X_ManagerPortal.Models.ProfileViewModel
+
+
+<style>
+    label {
+        text-transform: none !important;
+    }
+</style>
+<div class="row g-4 justify-content-center mt-4">
+
+    <!-- LEFT SIDE -->
+    <div class="col-lg-5 col-md-5">
+        <div class="card shadow h-100 bg-transparent border border-primary">
+            <div class="card-body">
+
+                <h4 class="mb-1">User Profile</h4>
+                <p class="text-muted small mb-4">
+                    Manager details synced from SAP B1 authorizations
+                </p>
+
+                <div class="d-flex align-items-center mb-4">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                         style="width: 45px; height: 45px; font-weight: 600;">
+                        @*@Model.FullName.Substring(0, 1)*@
+                    </div>
+                    <div class="ms-3">
+                        <div class="fw-bold">@Model.FullName</div>
+                        <div class="fw-bold">@Model.Position</div>
+
+                    </div>
+                </div>
+
+                <h6 class="text-muted small mb-2">About</h6>
+                <ul class="list-unstyled">
+
+
+                    <li class="mb-2">
+                        <i class="fas fa-envelope me-2 text-muted"></i>
+                        <strong>Email:</strong> @Model.Email
+                    </li>
+
+                    <li class="mb-2">
+                        <i class="fas fa-crown me-2 text-muted"></i>
+                        <strong>Role:</strong> @Model.Position
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="col-lg-7 col-md-7">
+        <div class="card shadow h-100 bg-transparent border border-primary">
+            <div class="card-body">
+                @*@if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                        <br />
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-link p-0 mt-2">Click here to login again</a>
+                    </div>
+                }*@
+
+                <h4 class="mb-1">Security & Preferences</h4>
+                <p>Update your password and notification settings</p>
+
+                @using (Html.BeginForm("UpdatePassword", "Home", FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
+
+                    <div class="mb-3">
+                        <label for="ChangePasswordModel_OldPassword" class="form-label">Old Password</label>
+                        @Html.PasswordFor(m => m.ChangePasswordModel.OldPassword, new { @class = "form-control", placeholder = "Enter current password", style = "max-width:100% !important" })
+                        @Html.ValidationMessageFor(m => m.ChangePasswordModel.OldPassword, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ChangePasswordModel_NewPassword" class="form-label">New Password</label>
+                        @Html.PasswordFor(m => m.ChangePasswordModel.NewPassword, new { @class = "form-control", placeholder = "Min 6 chars", style = "max-width:100% !important" })
+                        @Html.ValidationMessageFor(m => m.ChangePasswordModel.NewPassword, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ChangePasswordModel_ConfirmPassword" class="form-label">Confirm New Password</label>
+                        @Html.PasswordFor(m => m.ChangePasswordModel.ConfirmPassword, new { @class = "form-control", placeholder = "Re-enter new password", style = "max-width:100% !important" })
+                        @Html.ValidationMessageFor(m => m.ChangePasswordModel.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mb-4">Update Password</button>}
+                @*<div>
+                    <input type="checkbox" name="name" value="" />
+                    <label>Receive email alerts for approvals</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="name" value="" />
+                    <label> Receive summary of reports every morning</label>
+                </div>*@
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+@*<script>
+    setTimeout(function () {
+        $('.alert-success').fadeOut('slow');
+    }, 5000);
+</script>*@
+

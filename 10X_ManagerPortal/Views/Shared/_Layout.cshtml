@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="en"
+      class="light-style  layout-menu-fixed"
+      dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="/Content/assets/"
+      data-template="vertical-menu-template">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Manager Console</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Icons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Sneat Core CSS -->
+    <link rel="stylesheet" href="~/Content/assets/vendor/css/core.css" />
+    <link rel="stylesheet"
+          href="~/Content/assets/vendor/css/theme-raspberry-dark.css"
+          class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="~/Content/assets/css/demo.css" />
+
+    <!-- Vendor -->
+    <link rel="stylesheet" href="~/Content/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <!-- DataTables -->
+    <link rel="stylesheet"
+        href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    @*<link rel="stylesheet" href="//cdn.datatables.net/2.3.5/css/dataTables.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/columncontrol/1.0.5/css/columnControl.dataTables.min.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.0/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.min.css">*@
+
+
+
+    <!-- Helpers -->
+    <script src="~/Content/assets/vendor/js/helpers.js"></script>
+    <script src="~/Content/assets/js/config.js"></script>
+
+    <style>
+        /* ===============================
+           SIDEBAR COLLAPSE TEXT CONTROL
+        ================================ */
+
+        /* Hide brand text when collapsed */
+        .layout-menu-collapsed .app-brand-text {
+            display: none !important;
+        }
+
+        /* HOVER → show text again */
+        .layout-menu-hover .app-brand-text,
+        .layout-menu-hover .menu-link div,
+        .layout-menu-hover .menu-header {
+            display: block !important;
+        }
+
+
+        .layout-page {
+            background: var(--bs-body-bg);
+        }
+
+        .content-wrapper {
+            min-height: calc(100vh - 64px);
+            background: transparent;
+        }
+
+        .logo-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 12px;
+            /*background: radial-gradient(circle at 30% 0, #ff5a5a, #e30613);*/
+            background: #e30b5c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+
+            <!-- ================= SIDEBAR ================= -->
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+
+                <div class="app-brand demo d-flex align-items-center px-3">
+                    <div class="logo-circle me-2">10X</div>
+                    <div class="app-brand-text menu-text">
+                        <div class="fw-bold">Manager Console</div>
+                        <small class="text-muted">HANA Connected</small>
+                    </div>
+
+                    <a href="javascript:void(0);" class="layout-menu-toggle menu-link ms-auto">
+                        <i class="bx bx-chevron-left bx-sm"></i>
+                    </a>
+                </div>
+
+                <ul class="menu-inner py-1">
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Overview</span>
+                    </li>
+
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"].ToString()=="Home" ? "active" : "")">
+                        <a href="@Url.Action("Index","Home")" class="menu-link">
+                            <i class="menu-icon bx bx-grid-alt"></i>
+                            <div>Dashboard</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Operations</span>
+                    </li>
+
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"].ToString()=="Approvals" ? "active" : "")">
+                        <a href="@Url.Action("Index","Approvals")" class="menu-link">
+                            <i class="menu-icon bx bx-check-circle"></i>
+                            <div>Approvals</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"].ToString()=="Notifications" ? "active" : "")">
+                        <a href="@Url.Action("Index","Notifications")" class="menu-link">
+                            <i class="menu-icon bx bx-bell"></i>
+                            <div>Notifications</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"].ToString()=="Reports" ? "active" : "")">
+                        <a href="@Url.Action("Index","Reports")" class="menu-link">
+                            <i class="menu-icon bx bx-file"></i>
+                            <div>Reports</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Profile</span>
+                    </li>
+
+                    <li class="menu-item @(ViewContext.RouteData.Values["action"].ToString()=="UserProfile" ? "active" : "")">
+                        <a href="@Url.Action("UserProfile","Home")" class="menu-link">
+                            <i class="menu-icon bx bx-user"></i>
+                            <div>User Profile</div>
+                        </a>
+                    </li>
+
+                </ul>
+            </aside>
+            <!-- ================= /SIDEBAR ================= -->
+            <!-- ================= PAGE ================= -->
+            <div class="layout-page">
+
+                <!-- ================= NAVBAR ================= -->
+                <nav class=" layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                     id="layout-navbar">
+
+                    <!-- MOBILE TOGGLE -->
+                    <div class="layout-menu-toggle navbar-nav d-xl-none me-3">
+                        <a class="nav-item nav-link px-0" href="javascript:void(0)">
+                            <i class="bx bx-menu bx-sm"></i>
+                        </a>
+                    </div>
+
+                    <div class="navbar-nav-right d-flex align-items-center ms-auto">
+                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                            <li class="nav-item dropdown me-3">
+                                <a class="nav-link dropdown-toggle hide-arrow"
+                                   href="javascript:void(0)"
+                                   data-bs-toggle="dropdown">
+                                    <i class="bx bx-bell bx-sm"></i>
+                                    <span class="badge bg-danger rounded-pill badge-notifications"
+                                          id="notifCount"
+                                          style="display:none;"></span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end p-0" style="width:340px;">
+                                    <li class="dropdown-header fw-semibold">
+                                        Today's Notifications
+                                    </li>
+                                    <li>
+                                        <ul class="list-group list-group-flush" id="notifList">
+                                            <li class="list-group-item text-center text-muted">
+                                                No notifications
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown-user dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow"
+                                   href="javascript:void(0)"
+                                   data-bs-toggle="dropdown">
+                                    <div class="avatar avatar-online">
+                                        <img src="~/Content/assets/img/avatars/1.png"
+                                             class="w-px-40 h-auto rounded-circle" />
+                                    </div>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <strong>@(Session["LoggedUser"] ?? "User")</strong>
+                                        </a>
+                                    </li>
+                                    <li><div class="dropdown-divider"></div></li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Logout","Account")">
+                                            <i class="bx bx-power-off me-2"></i> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+                <!-- ================= /NAVBAR ================= -->
+                <!-- ================= CONTENT ================= -->
+                <div class="content-wrapper">
+                    <div class="container-fluid flex-grow-1 p-3">
+                        @RenderBody()
+                    </div>
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- ================= /CONTENT ================= -->
+
+            </div>
+        </div>
+
+        <div class="layout-overlay layout-menu-toggle"></div>
+        <div class="drag-target"></div>
+    </div>
+    <!-- jQuery (FIRST) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/Content/assets/vendor/libs/popper/popper.js"></script>
+    <script src="~/Content/assets/vendor/js/bootstrap.js"></script>
+
+    <!-- DataTables (ONLY ONE VERSION) -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Perfect Scrollbar -->
+    <script src="~/Content/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    
+
+
+    <script>
+$(function () {
+
+    $.getJSON('@Url.Action("Today", "Notifications")', function (data) {
+
+        var list = $('#notifList');
+        var unread = data.filter(x => !x.WasRead).length;
+
+        list.empty();
+
+        if (data.length === 0) {
+            list.append(
+                '<li class="list-group-item text-center text-muted">No notifications</li>'
+            );
+        } else {
+
+            if (unread > 0) {
+                $('#notifCount').text(unread).show();
+            }
+
+            $.each(data, function (i, n) {
+                list.append(`
+                    <li class="list-group-item ${n.WasRead ? '' : 'fw-semibold'}">
+                        <div>${n.Subject}</div>
+                        <small class="text-muted">${n.Time}</small>
+                    </li>
+                `);
+            });
+        }
+    });
+
+});
+    </script>
+
+    <!-- Sneat Menu -->
+    @*<script src="~/Content/assets/vendor/js/menu.js"></script>
+        <script src="~/Content/assets/js/main.js"></script>*@
+
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

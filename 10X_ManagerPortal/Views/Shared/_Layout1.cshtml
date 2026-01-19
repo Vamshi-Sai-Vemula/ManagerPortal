@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 10XManagerPortal</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/css")
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @Styles.Render("~/Content/ej2/material.css")
+    @Scripts.Render("~/Scripts/ej2/ej2.min.js")
+
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"].ToString();
+        var currentAction = ViewContext.RouteData.Values["action"].ToString();
+    }
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .menu-vertical, .menu-vertical .menu-block, .menu-vertical .menu-inner > .menu-item, .menu-vertical .menu-inner > .menu-header {
+            width: 20.25rem;
+        }
+        
+    </style>
+
+</head>
+
+
+<body style="--bs-scrollbar-width: 19px;">
+
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
+            @*@Html.Partial("_Sidebar")*@
+            @Html.Action("Sidebar", "Menu", new { currentController = currentController, currentAction = currentAction })
+
+            <!-- / Menu -->
+            <!-- Layout container -->
+            <div class="layout-page" style="height:100vh">
+                <!-- Navbar -->
+
+                @Html.Partial("_Navbar")
+
+                <!-- / Navbar -->
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+
+                    <div class="container-fluid flex-grow-1 container-p-y  " style="overflow:auto">
+                        @RenderBody()
+                    </div>
+                    <!-- / Content -->
+                    <!-- Footer -->
+                    @Html.Partial("_Footer")
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+
+        <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+        <div class="drag-target"></div>
+    </div>
+
+    <!-- Working Bootstrap Modal -->
+    <div class="modal fade" id="form-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Test Modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    This is a working Bootstrap 5 modal!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    @Scripts.Render("~/bundles/jquery")
+    <!-- 2. DataTables (depends on jQuery) -->
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- 3. Bootstrap / menu / site vendor scripts -->
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Content/assets/vendor/js/menu.js"></script>
+
+    <!-- 4. Syncfusion Core (ej2.min.js) was loaded in <head>, so grid/editors can work -->
+    <!-- 5. Now it's safe to run code that uses $, bootstrap.Modal, etc -->
+    <script>
+        $(document).ready(function () {
+            $('#sidebarToggle').click(function (e) {
+                e.preventDefault();
+                $('body').toggleClass('control-sidebar-slide-open');
+            });
+
+            $('.overlay').click(function () {
+                $('body').removeClass('control-sidebar-slide-open');
+            });
+
+            $('.control-sidebar .nav-link').click(function (e) {
+                if ($(this).next('.nav-treeview').length > 0) {
+                    e.preventDefault();
+                } else {
+                    $('body').removeClass('control-sidebar-slide-open');
+                }
+            });
+
+            // Safe OverlayScrollbars
+            if (typeof OverlayScrollbars !== 'undefined') {
+                OverlayScrollbars(document.querySelectorAll(".sidebar-menu"), {
+                    scrollbars: { autoHide: "leave", autoHideDelay: 500 }
+                });
+            }
+
+            // Auto-capitalize
+            $('input[type="text"]').on('blur', function () {
+                const words = $(this).val().toLowerCase().split(' ');
+                for (let i = 0; i < words.length; i++) {
+                    if (words[i].length > 0) {
+                        words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+                    }
+                }
+                $(this).val(words.join(' '));
+            });
+
+            // Sidebar Search
+            $('#sidebarSearch').on("keyup", function () {
+                const value = $(this).val().toLowerCase();
+                $("#sidebarMenu li").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+
+        // Globally available helpers
+        function showTestModal() {
+            const modal = new bootstrap.Modal(document.getElementById('form-modal'));
+            modal.show();
+        }
+
+        function showInPopup(url, title) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (res) {
+                    $('#form-modal .modal-body').html(res);
+                    $('#form-modal .modal-title').html(title);
+                    const modal = new bootstrap.Modal(document.getElementById('form-modal'));
+                    modal.show();
+                }
+            });
+        }
+    </script>
+
+   
+    
+    <!-- 7. Finally, per-page scripts like your SalesOrder Create grid / autocomplete -->
+    @RenderSection("scripts", required: false)
+
+
+
+</body>
+</html>

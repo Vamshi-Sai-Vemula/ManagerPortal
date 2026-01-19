@@ -1,0 +1,71 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+}
+
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+
+    <div class="app-brand demo d-flex align-items-center px-3">
+        <div class="logo-circle me-2">10X</div>
+        <div class="app-brand-text">
+            <div class="fw-bold">Manager Console</div>
+            <small class="text-muted">HANA Connected</small>
+        </div>
+
+        <!-- THIS BUTTON IS IMPORTANT -->
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link ms-auto">
+            <i class="bx bx-chevron-left bx-sm"></i>
+        </a>
+    </div>
+
+    <ul class="menu-inner py-1">
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Overview</span>
+        </li>
+
+        <li class="menu-item @(controller=="Home" ? "active" : "")">
+            <a href="@Url.Action("Index","Home")" class="menu-link">
+                <i class="menu-icon bx bx-grid-alt"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Operations</span>
+        </li>
+
+        <li class="menu-item @(controller=="Approvals" ? "active" : "")">
+            <a href="@Url.Action("Index","Approvals")" class="menu-link">
+                <i class="menu-icon bx bx-check-circle"></i>
+                <div>Approvals</div>
+            </a>
+        </li>
+
+        <li class="menu-item @(controller=="Notifications" ? "active" : "")">
+            <a href="@Url.Action("Index","Notifications")" class="menu-link">
+                <i class="menu-icon bx bx-bell"></i>
+                <div>Notifications</div>
+            </a>
+        </li>
+
+        <li class="menu-item @(controller=="Reports" ? "active" : "")">
+            <a href="@Url.Action("Index","Reports")" class="menu-link">
+                <i class="menu-icon bx bx-file"></i>
+                <div>Reports</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Profile</span>
+        </li>
+
+        <li class="menu-item @(action=="UserProfile" ? "active" : "")">
+            <a href="@Url.Action("UserProfile","Home")" class="menu-link">
+                <i class="menu-icon bx bx-user"></i>
+                <div>User Profile</div>
+            </a>
+        </li>
+
+    </ul>
+</aside>

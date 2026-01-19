@@ -1,0 +1,301 @@
+﻿
+@{
+    ViewBag.Title = "DataTable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+        /* ===============================
+       DATATABLE BUTTONS (SAP STYLE)
+    =============================== */
+    .dt-share-menu {
+        position: absolute;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 6px 0;
+        z-index: 9999;
+        width: 200px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+
+        .dt-share-menu a {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+        }
+
+            .dt-share-menu a:hover {
+                background: #f5f5f5;
+            }
+
+        .dt-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+            .dt-buttons .dt-btn {
+                border-radius: 6px;
+                padding: 4px 12px;
+                font-weight: 500;
+                box-shadow: none;
+            }
+
+            .dt-buttons .btn-danger {
+                background: #dc3545;
+                border-color: #dc3545;
+            }
+
+            .dt-buttons .btn-success {
+                background: #198754;
+                border-color: #198754;
+            }
+
+            .dt-buttons .btn-primary {
+                background: #0d6efd;
+                border-color: #0d6efd;
+            }
+
+            .dt-buttons .btn:hover {
+                opacity: 0.9;
+            }
+
+        /* Remove default DataTables button styling */
+        .dt-button {
+            border: none !important;
+            background: transparent !important;
+        }
+
+        table.dataTable {
+            border-collapse: separate !important;
+        }
+
+            table.dataTable thead th {
+                background: #fff;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+            }
+
+        .dt-column-control {
+            color: #6c757d;
+        }
+
+            .dt-column-control:hover {
+                color: #000;
+            }
+        /* Responsive control icon */
+        td.dtr-control::before {
+            color: #6c757d !important;
+            font-size: 14px;
+        }
+
+        /* Column control icon */
+        .dt-column-control {
+            display: inline-flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* Popup above Sneat */
+        .dtcc-popup {
+            z-index: 1100 !important;
+        }
+</style>
+<div class="table-responsive">
+    <table id="demoTable" class="display compact " style="width:100%">
+        <thead>
+            <tr>
+                <th>    </th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>    </td>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+            </tr>
+            <tr>
+                <td>    </td>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+            </tr>
+            @*<tr>
+                    <td>Ashton Cox</td>
+                    <td>Junior Technical Author</td>
+                    <td>San Francisco</td>
+                    <td>66</td>
+                </tr>
+                <tr>
+                    <td>Cedric Kelly</td>
+                    <td>Senior JavaScript Developer</td>
+                    <td>Edinburgh</td>
+                    <td>22</td>
+                </tr>
+                <tr>
+                    <td>Airi Satou</td>
+                    <td>Accountant</td>
+                    <td>Tokyo</td>
+                    <td>33</td>
+                </tr>*@
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        /* ===============================
+           SAP COMPANY INFO
+        =============================== */
+        const companyInfo = {
+            name: "10X Technologies Pvt Ltd",
+            address: "Hyderabad, Telangana, India",
+            phone: "+91 98765 43210",
+            gst: "36ABCDE1234F1Z5"
+        };
+        $(document).on('click', '.copy-link', function (e) {
+            e.preventDefault();
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard');
+        });
+
+        /* ===============================
+           PDF CUSTOMIZATION
+        =============================== */
+        function customizePdf(doc) {
+
+            doc.pageMargins = [40, 90, 40, 60];
+
+            doc.header = () => ({
+                margin: [40, 20, 40, 0],
+                stack: [
+                    { text: companyInfo.name, fontSize: 14, bold: true },
+                    { text: companyInfo.address, fontSize: 9 },
+                    {
+                        columns: [
+                            { text: 'Phone: ' + companyInfo.phone, fontSize: 9 },
+                            { text: 'GST: ' + companyInfo.gst, fontSize: 9, alignment: 'right' }
+                        ]
+                    },
+                    {
+                        canvas: [
+                            { type: 'line', x1: 0, y1: 5, x2: 760, y2: 5, lineWidth: 1 }
+                        ]
+                    }
+                ]
+            });
+
+            doc.footer = (page, pages) => ({
+                margin: [40, 0, 40, 20],
+                columns: [
+                    { text: 'Generated from SAP Manager Portal', fontSize: 8 },
+                    { text: `Page ${page} of ${pages}`, alignment: 'right', fontSize: 8 }
+                ]
+            });
+
+            const table = doc.content.find(c => c.table);
+            table.layout = 'lightHorizontalLines';
+
+            table.table.body.forEach((row, i) => {
+                row.forEach(cell => {
+                    cell.fontSize = i === 0 ? 10 : 9;
+                    if (i === 0) cell.bold = true;
+                });
+            });
+        }
+
+        /* ===============================
+           DATATABLE INIT
+        =============================== */
+        new DataTable('#demoTable', {
+            responsive: true,
+
+            columnControl: {
+                target: 0,
+                content: ['order', ['orderAsc', 'orderDesc', 'orderRemove', 'search']]
+            },
+
+            columnDefs: [{
+                targets: 0,
+                className: 'dt-column-control',
+                orderable: false
+            }],
+
+            layout: {
+                topStart: ['pageLength','search'],
+                topEnd: {
+                    buttons: [
+                        {
+                            extend: 'pdf',
+                            text: 'PDF',
+                            className: 'btn btn-sm btn-danger dt-btn',
+                            title: '',
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            customize: customizePdf
+                        },
+                        {
+                            extend: 'excel',
+                            text: 'Excel',
+                            className: 'btn btn-sm btn-success dt-btn'
+                        },
+                        {
+                            extend: 'print',
+                            text: 'Print',
+                            className: 'btn btn-sm btn-primary dt-btn'
+                        },
+                        {
+                            text: 'Share',
+                            className: 'btn btn-sm btn-secondary dropdown-toggle',
+                            action: function (e, dt, node) {
+
+                                const url = encodeURIComponent(window.location.href);
+                                const title = encodeURIComponent('SAP Manager Portal Report');
+
+                                const menu = `
+            <div class="dt-share-menu">
+                <a href="https://wa.me/?text=${title}%20${url}" target="_blank">
+                    📱 WhatsApp
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&su=${title}&body=${url}" target="_blank">
+                    📧 Gmail
+                </a>
+                <a href="https://teams.microsoft.com/share?href=${url}&text=${title}" target="_blank">
+                    👥 Microsoft Teams
+                </a>
+                <a href="#" class="copy-link">
+                    🔗 Copy Link
+                </a>
+            </div>
+        `;
+
+                                $('.dt-share-menu').remove(); // remove old menu
+                                $(node).append(menu);
+                            }
+                        }
+
+                    ]
+                }
+            }
+        });
+
+    });
+</script>
+
+
+
+
+
+
+
