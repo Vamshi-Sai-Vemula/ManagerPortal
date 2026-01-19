@@ -116,12 +116,12 @@ namespace _10X_ManagerPortal.Services
                     WHEN '17' THEN 'Sales Order'
                     WHEN '15' THEN 'Delivery'
                     WHEN '16' THEN 'Returns'
-                    WHEN '203' THEN 'Return Request'
+                   
                     WHEN '13' THEN 'A/R Invoice'
                     WHEN '14' THEN 'A/R Credit Memo'
-                    WHEN '2030000000' THEN 'A/R Down Payment'
-                    WHEN '540000006' THEN 'Purchase Request'
-                    WHEN '540000005' THEN 'Purchase Quotation'
+                    WHEN '203' THEN 'A/R Down Payment'
+                    WHEN '1470000113' THEN 'Purchase Request'
+                    WHEN '540000006' THEN 'Purchase Quotation'
                     WHEN '22' THEN 'Purchase Order'
                     WHEN '20' THEN 'Goods Receipt PO'
                     WHEN '21' THEN 'Goods Return'
@@ -132,14 +132,15 @@ namespace _10X_ManagerPortal.Services
                     WHEN '60' THEN 'Goods Issue'
                     WHEN '1250000001' THEN 'Inventory Transfer Request'
                     WHEN '67' THEN 'Inventory Transfer'
-                    WHEN '10000071' THEN 'Inventory Opening Balance'
+                    WHEN '310000001' THEN 'Inventory Opening Balance'
                     WHEN '46' THEN 'Outgoing Payment'
-                    WHEN '1470000113' THEN 'Incoming Payment'
+                    WHEN '24' THEN 'Incoming Payment'
                     WHEN '540000007' THEN 'Sales Blanket Agreement'
                     WHEN '540000008' THEN 'Purchase Blanket Agreement'   
                     WHEN '1470000065' THEN 'Inventory Counting'
-                    WHEN '1470000071' THEN 'Inventory Posting'
+                    WHEN '10000071' THEN 'Inventory Posting'
                     WHEN '30' THEN 'Journal Entry'
+                    WHEN '203' THEN 'Return Request'
                     ELSE 'Other Document'
                     END AS ""DocTypeName"",
                     (SELECT ""BPLName"" FROM ""OBPL"" WHERE ""BPLId"" = L1.""BPLId"") AS ""Branch"",
@@ -187,26 +188,36 @@ namespace _10X_ManagerPortal.Services
                         WHEN 'N' THEN 'Rejected'
                     END AS ""RequestStatus"",
                     CASE T0.""ObjType""
-                         WHEN '22' THEN 'Purchase Order'
-    WHEN '20' THEN 'Goods Receipt PO'
-    WHEN '18' THEN 'A/P Invoice'
-    WHEN '19' THEN 'A/P Credit Memo'
-    WHEN '30' THEN 'Journal Entry'
-    WHEN '46' THEN 'Outgoing Payment'
-    WHEN '1470000113' THEN 'Incoming Payment'
-    WHEN '13' THEN 'A/R Invoice'
-    WHEN '14' THEN 'A/R Credit Memo'
-    WHEN '17' THEN 'Sales Order'
-    WHEN '15' THEN 'Delivery'
-    WHEN '16' THEN 'Returns'
-    WHEN '23' THEN 'Purchase Quotation'
-    WHEN '540000006' THEN 'Purchase Request'
-    WHEN '540000007' THEN 'Blanket Agreement'
-    WHEN '1250000001' THEN 'Inventory Transfer Request'
-    WHEN '67' THEN 'Inventory Transfer'
-    WHEN '59' THEN 'Goods Receipt'
-    WHEN '60' THEN 'Goods Issue'
-    ELSE 'Other Document'
+                         WHEN '23' THEN 'Sales Quotation'
+                    WHEN '17' THEN 'Sales Order'
+                    WHEN '15' THEN 'Delivery'
+                    WHEN '16' THEN 'Returns'
+                   
+                    WHEN '13' THEN 'A/R Invoice'
+                    WHEN '14' THEN 'A/R Credit Memo'
+                    WHEN '203' THEN 'A/R Down Payment'
+                    WHEN '1470000113' THEN 'Purchase Request'
+                    WHEN '540000006' THEN 'Purchase Quotation'
+                    WHEN '22' THEN 'Purchase Order'
+                    WHEN '20' THEN 'Goods Receipt PO'
+                    WHEN '21' THEN 'Goods Return'
+                    WHEN '18' THEN 'A/P Invoice'
+                    WHEN '19' THEN 'A/P Credit Memo'
+                    WHEN '204' THEN 'A/P Down Payment'
+                    WHEN '59' THEN 'Goods Receipt'
+                    WHEN '60' THEN 'Goods Issue'
+                    WHEN '1250000001' THEN 'Inventory Transfer Request'
+                    WHEN '67' THEN 'Inventory Transfer'
+                    WHEN '310000001' THEN 'Inventory Opening Balance'
+                    WHEN '46' THEN 'Outgoing Payment'
+                    WHEN '24' THEN 'Incoming Payment'
+                    WHEN '540000007' THEN 'Sales Blanket Agreement'
+                    WHEN '540000008' THEN 'Purchase Blanket Agreement'   
+                    WHEN '1470000065' THEN 'Inventory Counting'
+                    WHEN '10000071' THEN 'Inventory Posting'
+                    WHEN '30' THEN 'Journal Entry'
+                    WHEN '203' THEN 'Return Request'
+                    ELSE 'Other Document'
                     END AS ""DocumentType"",
                     TO_NVARCHAR(T0.""CreateDate"", 'DD.MM.YY') AS ""IssueDate"",
                     T0.""DraftEntry"" AS ""DraftKey"",
@@ -250,26 +261,36 @@ namespace _10X_ManagerPortal.Services
                     T0.""DocNum"",
                     T0.""ObjType"",
                     CASE T0.""ObjType""
-                          WHEN '22' THEN 'Purchase Order'
-    WHEN '20' THEN 'Goods Receipt PO'
-    WHEN '18' THEN 'A/P Invoice'
-    WHEN '19' THEN 'A/P Credit Memo'
-    WHEN '30' THEN 'Journal Entry'
-    WHEN '46' THEN 'Outgoing Payment'
-    WHEN '1470000113' THEN 'Incoming Payment'
-    WHEN '13' THEN 'A/R Invoice'
-    WHEN '14' THEN 'A/R Credit Memo'
-    WHEN '17' THEN 'Sales Order'
-    WHEN '15' THEN 'Delivery'
-    WHEN '16' THEN 'Returns'
-    WHEN '23' THEN 'Purchase Quotation'
-    WHEN '540000006' THEN 'Purchase Request'
-    WHEN '540000007' THEN 'Blanket Agreement'
-    WHEN '1250000001' THEN 'Inventory Transfer Request'
-    WHEN '67' THEN 'Inventory Transfer'
-    WHEN '59' THEN 'Goods Receipt'
-    WHEN '60' THEN 'Goods Issue'
-    ELSE 'Other Document'
+                           WHEN '23' THEN 'Sales Quotation'
+                    WHEN '17' THEN 'Sales Order'
+                    WHEN '15' THEN 'Delivery'
+                    WHEN '16' THEN 'Returns'
+                   
+                    WHEN '13' THEN 'A/R Invoice'
+                    WHEN '14' THEN 'A/R Credit Memo'
+                    WHEN '203' THEN 'A/R Down Payment'
+                    WHEN '1470000113' THEN 'Purchase Request'
+                    WHEN '540000006' THEN 'Purchase Quotation'
+                    WHEN '22' THEN 'Purchase Order'
+                    WHEN '20' THEN 'Goods Receipt PO'
+                    WHEN '21' THEN 'Goods Return'
+                    WHEN '18' THEN 'A/P Invoice'
+                    WHEN '19' THEN 'A/P Credit Memo'
+                    WHEN '204' THEN 'A/P Down Payment'
+                    WHEN '59' THEN 'Goods Receipt'
+                    WHEN '60' THEN 'Goods Issue'
+                    WHEN '1250000001' THEN 'Inventory Transfer Request'
+                    WHEN '67' THEN 'Inventory Transfer'
+                    WHEN '310000001' THEN 'Inventory Opening Balance'
+                    WHEN '46' THEN 'Outgoing Payment'
+                    WHEN '24' THEN 'Incoming Payment'
+                    WHEN '540000007' THEN 'Sales Blanket Agreement'
+                    WHEN '540000008' THEN 'Purchase Blanket Agreement'   
+                    WHEN '1470000065' THEN 'Inventory Counting'
+                    WHEN '10000071' THEN 'Inventory Posting'
+                    WHEN '30' THEN 'Journal Entry'
+                    WHEN '203' THEN 'Return Request'
+                    ELSE 'Other Document'
                     END AS ""DocumentType"",
                     T0.""DocDate"",
                     T0.""CardCode"",
@@ -358,46 +379,47 @@ namespace _10X_ManagerPortal.Services
         {
             return new List<SelectListItem>
             {
+                new SelectListItem { Value = "", Text = "All Document Types" },
                 new SelectListItem { Value = "23", Text = "Sales Quotation" },
-        new SelectListItem { Value = "17", Text = "Sales Order" },
-        new SelectListItem { Value = "15", Text = "Delivery" },
-        new SelectListItem { Value = "16", Text = "Returns" },
-        new SelectListItem { Value = "203", Text = "Return Request" },
-        new SelectListItem { Value = "13", Text = "A/R Invoice" },
-        new SelectListItem { Value = "14", Text = "A/R Credit Memo" },
-        new SelectListItem { Value = "2030000000", Text = "A/R Down Payment" },
-        new SelectListItem { Value = "540000007", Text = "Sales Blanket Agreement" },
+                new SelectListItem { Value = "17", Text = "Sales Order" },
+                new SelectListItem { Value = "15", Text = "Delivery" },
+                new SelectListItem { Value = "16", Text = "Returns" },
+                new SelectListItem { Value = "203", Text = "Return Request" },
+                new SelectListItem { Value = "13", Text = "A/R Invoice" },
+                new SelectListItem { Value = "14", Text = "A/R Credit Memo" },
+                new SelectListItem { Value = "2030000000", Text = "A/R Down Payment" },
+                new SelectListItem { Value = "540000007", Text = "Sales Blanket Agreement" },
 
-        /* =========================
-           PURCHASING
-           ========================= */
-        new SelectListItem { Value = "540000005", Text = "Purchase Quotation" },
-        new SelectListItem { Value = "540000006", Text = "Purchase Request" },
-        new SelectListItem { Value = "22", Text = "Purchase Order" },
-        new SelectListItem { Value = "20", Text = "Goods Receipt PO (GRPO)" },
-        new SelectListItem { Value = "21", Text = "Goods Return" },
-        new SelectListItem { Value = "18", Text = "A/P Invoice" },
-        new SelectListItem { Value = "19", Text = "A/P Credit Memo" },
-        new SelectListItem { Value = "204", Text = "A/P Down Payment" },
-        new SelectListItem { Value = "540000008", Text = "Purchase Blanket Agreement" },
+                /* =========================
+                   PURCHASING
+                   ========================= */
+                new SelectListItem { Value = "540000006", Text = "Purchase Quotation" },
+                new SelectListItem { Value = "1470000113", Text = "Purchase Request" },
+                new SelectListItem { Value = "22", Text = "Purchase Order" },
+                new SelectListItem { Value = "20", Text = "Goods Receipt PO (GRPO)" },
+                new SelectListItem { Value = "21", Text = "Goods Return" },
+                new SelectListItem { Value = "18", Text = "A/P Invoice" },
+                new SelectListItem { Value = "19", Text = "A/P Credit Memo" },
+                new SelectListItem { Value = "204", Text = "A/P Down Payment" },
+                new SelectListItem { Value = "540000008", Text = "Purchase Blanket Agreement" },
 
-        /* =========================
-           INVENTORY
-           ========================= */
-        new SelectListItem { Value = "59", Text = "Goods Receipt" },
-        new SelectListItem { Value = "60", Text = "Goods Issue" },
-        new SelectListItem { Value = "67", Text = "Inventory Transfer" },
-        new SelectListItem { Value = "1250000001", Text = "Inventory Transfer Request" },
-        new SelectListItem { Value = "10000071", Text = "Inventory Opening Balance" },
-        new SelectListItem { Value = "1470000065", Text = "Inventory Counting" },
-        new SelectListItem { Value = "1470000071", Text = "Inventory Posting" },
+                /* =========================
+                   INVENTORY
+                   ========================= */
+                new SelectListItem { Value = "59", Text = "Goods Receipt" },
+                new SelectListItem { Value = "60", Text = "Goods Issue" },
+                new SelectListItem { Value = "67", Text = "Inventory Transfer" },
+                new SelectListItem { Value = "1250000001", Text = "Inventory Transfer Request" },
+                new SelectListItem { Value = "310000001", Text = "Inventory Opening Balance" },
+                new SelectListItem { Value = "1470000065", Text = "Inventory Counting" },
+                new SelectListItem { Value = "10000071", Text = "Inventory Posting" },
 
-        /* =========================
-           FINANCIALS
-           ========================= */
-        new SelectListItem { Value = "30", Text = "Journal Entry" },
-        new SelectListItem { Value = "46", Text = "Outgoing Payment" },
-        new SelectListItem { Value = "1470000113", Text = "Incoming Payment" }
+                /* =========================
+                   FINANCIALS
+                   ========================= */
+                new SelectListItem { Value = "30", Text = "Journal Entry" },
+                new SelectListItem { Value = "46", Text = "Outgoing Payment" },
+                new SelectListItem { Value = "24", Text = "Incoming Payment" }
             };
         }
     }

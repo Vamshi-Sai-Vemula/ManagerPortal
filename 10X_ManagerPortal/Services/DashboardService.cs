@@ -487,16 +487,16 @@ namespace _10X_ManagerPortal.Services
                 SELECT L1.""DocNum"", L1.""CardName"", L1.""DocTotal"",
                        CASE L1.""ObjType""
                                   
-                    WHEN '23' THEN 'Sales Quotation'
+                     WHEN '23' THEN 'Sales Quotation'
                     WHEN '17' THEN 'Sales Order'
                     WHEN '15' THEN 'Delivery'
                     WHEN '16' THEN 'Returns'
-                    WHEN '203' THEN 'Return Request'
+                   
                     WHEN '13' THEN 'A/R Invoice'
                     WHEN '14' THEN 'A/R Credit Memo'
-                    WHEN '2030000000' THEN 'A/R Down Payment'
-                    WHEN '540000006' THEN 'Purchase Request'
-                    WHEN '540000005' THEN 'Purchase Quotation'
+                    WHEN '203' THEN 'A/R Down Payment'
+                    WHEN '1470000113' THEN 'Purchase Request'
+                    WHEN '540000006' THEN 'Purchase Quotation'
                     WHEN '22' THEN 'Purchase Order'
                     WHEN '20' THEN 'Goods Receipt PO'
                     WHEN '21' THEN 'Goods Return'
@@ -507,14 +507,15 @@ namespace _10X_ManagerPortal.Services
                     WHEN '60' THEN 'Goods Issue'
                     WHEN '1250000001' THEN 'Inventory Transfer Request'
                     WHEN '67' THEN 'Inventory Transfer'
-                    WHEN '10000071' THEN 'Inventory Opening Balance'
+                    WHEN '310000001' THEN 'Inventory Opening Balance'
                     WHEN '46' THEN 'Outgoing Payment'
-                    WHEN '1470000113' THEN 'Incoming Payment'
+                    WHEN '24' THEN 'Incoming Payment'
                     WHEN '540000007' THEN 'Sales Blanket Agreement'
                     WHEN '540000008' THEN 'Purchase Blanket Agreement'   
                     WHEN '1470000065' THEN 'Inventory Counting'
-                    WHEN '1470000071' THEN 'Inventory Posting'
+                    WHEN '10000071' THEN 'Inventory Posting'
                     WHEN '30' THEN 'Journal Entry'
+                    WHEN '203' THEN 'Return Request'
                     ELSE 'Other Document'
                        END AS ""DocTypeName""
                 FROM ""ODRF"" L1

@@ -36,8 +36,8 @@ namespace _10X_ManagerPortal.Controllers
                 return RedirectToAction("Login", "Account");
 
             ViewBag.Status = status;
-            ViewBag.Branches = LoadBranches();
-            ViewBag.DocumentTypes = GetDocumentTypes();
+            ViewBag.Branches = _approvalService.GetBranches();
+            ViewBag.DocumentTypes = _approvalService.GetDocumentTypes();
 
             //var worklist = _approvalService.GetWorklist(
             //    userId,
